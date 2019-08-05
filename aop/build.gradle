@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group rootProject.group
+version rootProject.version
+println("aop::version --> $version  <>  group --> $group")
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+// https://mvnrepository.com/artifact/org.aspectj/aspectjrt
+    implementation group: 'org.aspectj', name: 'aspectjrt', version: '1.6.9'
+}
+
+
+hello.doLast { task ->
+    println " —— I'm the ${task.project.name} project"
+}

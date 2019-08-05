@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
+}
+
+mainClassName = 'com.phenix.test.Main'
+
+ext {
+    mGroup = 'com-phenix-annapt'
+    mVersion = '1.0-SNAPSHOT'
+//    其他module引用 rootProject.mGroup 、rootProject.mVersion
+}
+
+group 'com-phenix-annapt'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation project(':ann')
+    implementation project(':aop')
+    annotationProcessor project(':apt')
+
+
+}
+
+
+
+
+/**allprojects是对所有project的配置，包括Root Project。而subprojects是对所有Child Project的配置。
+ * 测试一下allprojects的范围
+ * 可以看到task(hello)遍历顺序是：allprojects > subprojects > Child Project
+ *
+ * D:\develop\workspace-intellij\ann-apt>gradlew -q hello
+ * ann::version --> 1.0-SNAPSHOT <>  group --> com-phenix-annapt
+ * apt::version --> 1.0-SNAPSHOT  <>  group --> com-phenix-annapt
+ * project name is ann-apt
+ * project name is ann
+ * here is subprojects
+ *  —— I'm the ann project
+ * project name is aop
+ * here is subprojects
+ *  —— I'm the aop project
+ * project name is apt
+ * here is subprojects
+ *  —— I'm the apt project
+ */
+allprojects {
+
+    //指定编译的编码
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+    
+    tasks.create('hello') {
+        doLast {
+            task ->
+                println "project name is ${task.project.name}"
+        }
+    }
+}
+
+
+subprojects {
+    hello.doLast {
+        println "here is subprojects"
+    }
+}

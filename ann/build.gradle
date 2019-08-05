@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group rootProject.group
+version rootProject.version
+println("ann::version --> $version <>  group --> $group")
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+
+hello.doLast { task ->
+    println " —— I'm the ${task.project.name} project"
+}

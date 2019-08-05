@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group rootProject.group
+version rootProject.version
+println("apt::version --> $version  <>  group --> $group")
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.google.auto.service/auto-service
+    implementation group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc3'
+    // https://mvnrepository.com/artifact/com.squareup/javapoet
+    implementation group: 'com.squareup', name: 'javapoet', version: '1.9.0'
+
+    implementation project(':ann')
+    
+}
+
+
+
+hello.doLast { task ->
+    println " —— I'm the ${task.project.name} project"
+}

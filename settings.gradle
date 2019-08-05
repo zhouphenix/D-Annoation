@@ -1,0 +1,5 @@
+rootProject.name = 'ann-apt'
+include 'aop'
+include 'ann'
+include 'apt'
+

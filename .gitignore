@@ -1,5 +1,10 @@
 .gradle
+.idea
+*/.idea/
 /build/
+*/build/
+/out/
+*/out/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -12,3 +17,8 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+# Intellij
+*.iml
+*/*.iml
+*/src/test/
