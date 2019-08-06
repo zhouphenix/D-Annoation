@@ -3,7 +3,7 @@ package com.phenix.test;
 import com.phenix.ann.apt.ExampleAnn;
 import com.phenix.ann.apt.InstanceAnn;
 
-//@InstanceAnn
+@InstanceAnn
 @ExampleAnn
 public class TestAnn {
 

@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'application'
     id 'idea'
+    // 该插件会将生成的Java文件放置在build/generated/sources/annotationProcesssor/java/main下并会被idea所识别
+    id 'net.ltgt.apt-idea' version "0.21"
 }
 
 mainClassName = 'com.phenix.test.Main'
@@ -31,6 +33,9 @@ dependencies {
 
 }
 
+compileJava {
+    options.compilerArgs << '-Adebug'
+}
 
 
 
@@ -58,7 +63,7 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
-    
+
     tasks.create('hello') {
         doLast {
             task ->

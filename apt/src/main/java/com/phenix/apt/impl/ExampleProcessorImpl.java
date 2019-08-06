@@ -46,17 +46,22 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
                                 "@date       ：Created in $S\n" +
                                 "@description：此方法由apt自动生成\n" +
                                 "@version:     $S\n", DateFormat.getDateTimeInstance().format(new Date()), "V1.0")
-                        // 添加 private int mField;
-                        .addField(FieldSpec.builder(int.class, "mField", Modifier.PRIVATE).build())
+
+                        .addField(FieldSpec.builder(int.class, "mField", Modifier.PRIVATE)
+                                .addJavadoc("添加 private int mField\n")
+                                .build())
+
+                        .addMethod(constructor())
+
                         // 添加
-                        // public void method(final String s) {
+                        //  public void method(final String s) {
                         //    System.out.println(s);
                         //  }
                         .addMethod(MethodSpec.methodBuilder("method")
-                                .addModifiers(Modifier.PUBLIC)
+                                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                                 .addParameter(ParameterSpec.builder(String.class, "s", Modifier.FINAL).build())
                                 .returns(void.class)
-                                .addStatement("System.out.println(s)")
+                                .addStatement("$T.out.println(s)", System.class)
                                 .build())
                         //  添加
                         //  @Override
@@ -68,6 +73,56 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
                                 .addModifiers(Modifier.PUBLIC)
                                 .addStatement("return super.toString()")
                                 .returns(String.class)
+                                .build())
+
+                        // 添加
+                        //  public static void main(String[] args) {
+                        //
+                        //  }
+                        .addMethod(MethodSpec.methodBuilder("main")
+                                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                                .returns(void.class)
+                                .addParameter(String[].class, "args")
+                                // System.out.println("Hello, JavaPoet!");
+                                .addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
+                                //  int total = 0;
+                                //  for (int i = 0; i < 10; i++) {
+                                //    total += i;
+                                //  }
+                                .addCode("int total = 0;\n"
+                                        + "for (int i = 0; i < 10; i++) {\n"
+                                        + "  total += i;\n"
+                                        + "}\n")
+                                //  method("Hello ExampleAnn!");
+                                .addStatement("method($S)", "Hello ExampleAnn!")
+                                //添加if-else if-else
+                                //      long now = System.currentTimeMillis();
+                                //    if (System.currentTimeMillis() < now) {
+                                //      System.out.println("Time travelling, woo hoo!");
+                                //    } else if (System.currentTimeMillis() == now) {
+                                //      System.out.println("Time stood still!");
+                                //    } else {
+                                //      System.out.println("Ok, time still moving forward");
+                                //    }
+                                .addStatement("long now = $T.currentTimeMillis()", System.class)
+                                .beginControlFlow("if ($T.currentTimeMillis() < now)", System.class)
+                                .addStatement("$T.out.println($S)", System.class, "Time travelling, woo hoo!")
+                                .nextControlFlow("else if ($T.currentTimeMillis() == now)", System.class)
+                                .addStatement("$T.out.println($S)", System.class, "Time stood still!")
+                                .nextControlFlow("else")
+                                .addStatement("$T.out.println($S)", System.class, "Ok, time still moving forward")
+                                .endControlFlow()
+                                // try-catch
+                                //    try {
+                                //      throw new Exception("Failed");
+                                //    } catch (Exception e) {
+                                //      throw new RuntimeException(e);
+                                //    }
+                                .beginControlFlow("try")
+                                .addStatement("throw new Exception($S)", "Failed")
+                                .nextControlFlow("catch ($T e)", Exception.class)
+                                .addStatement("throw new $T(e)", RuntimeException.class)
+                                .endControlFlow()
                                 .build())
                         .build();
 
@@ -96,6 +151,17 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
                 .addParameter(Runnable.class, "runnable")
+                .build();
+    }
+
+    private MethodSpec computeRange(String name, int from, int to, String op) {
+        return MethodSpec.methodBuilder(name)
+                .returns(int.class)
+                .addStatement("int result = 1")
+                .beginControlFlow("for (int i = " + from + "; i < " + to + "; i++)")
+                .addStatement("result = result " + op + " i")
+                .endControlFlow()
+                .addStatement("return result")
                 .build();
     }
 
@@ -207,9 +273,10 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
     /**
      * 构造函数
      */
-    public static MethodSpec constructor() {
+    public MethodSpec constructor() {
         return MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
+                .addJavadoc("构造方法\n")
                 .build();
     }
 
