@@ -81,15 +81,16 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
                                 .build())
 
                         // 添加
-                        //  public static void method(final String s) {
-                        //    System.out.println(s);
+                        //  public static void method(final String s, String... ss) {
+                        //    System.out.println(s + ss);
                         //  }
                         .addMethod(MethodSpec.methodBuilder("method")
                                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                                 .addJavadoc("static + void + (String) method \n")
                                 .addParameter(ParameterSpec.builder(String.class, "s", Modifier.FINAL).build())
+                                .addParameter(TypeVariableName.get("String..."), "ss", Modifier.FINAL)
                                 .returns(void.class)
-                                .addStatement("$T.out.println(s)", System.class)
+                                .addStatement("$T.out.println(s + $T.toString(ss))", System.class, Arrays.class)
                                 .build())
                         //  添加
                         //  @Override

@@ -1,6 +1,5 @@
 package com.phenix.apt.impl;
 
-import com.phenix.ann.aspect.MemoryCache;
 import com.phenix.apt.Constants;
 import com.phenix.apt.interfaces.IProcessor;
 import com.squareup.javapoet.*;
@@ -8,8 +7,9 @@ import com.squareup.javapoet.*;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
@@ -44,10 +44,7 @@ import static javax.lang.model.element.Modifier.*;
  */
 public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
 
-    /**
-     * 代码体builder
-     */
-    private CodeBlock.Builder mCodeBlockBuilder;
+
     /**
      * 注解的class
      */
@@ -56,15 +53,12 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
     private ProcessingEnvironment mProcessingEnvironment;
 
     public InstanceFactoryProcessorImpl() {
-        this.mCodeBlockBuilder = CodeBlock.builder();
+
     }
 
     @Override
     public void start(ProcessingEnvironment processingEnvironment, RoundEnvironment roundEnv) {
         mProcessingEnvironment = processingEnvironment;
-        //构建代码块
-        // 开始{
-        mCodeBlockBuilder.beginControlFlow(" switch (mClass.getSimpleName()) ");
     }
 
     @Override
@@ -75,26 +69,51 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
 
     @Override
     public void end() throws Exception {
-        for (ClassName cn : mAddedSet) {
-            mCodeBlockBuilder.addStatement("case $S: return  new $T()", cn.reflectionName(), cn);//初始化Presenter
-        }
-        mCodeBlockBuilder.addStatement("default: return mClass.newInstance()");
-        //结束}
-        mCodeBlockBuilder.endControlFlow();
-
-
         final String CLASS_NAME = "InstanceFactory";
         //构建类
-        TypeSpec.Builder tb = classBuilder(CLASS_NAME).addModifiers(PUBLIC, FINAL).addJavadoc("@ 实例化工厂 此类由apt自动生成");
+        TypeSpec.Builder tb = classBuilder(CLASS_NAME).addModifiers(PUBLIC, FINAL).addJavadoc("@ 实例化工厂 此类由apt自动生成\n");
         //构建方法1
         MethodSpec.Builder mb1 = MethodSpec.methodBuilder("create")
 //                .addAnnotation(MemoryCache.class)
-                .addJavadoc("@此方法由apt自动生成")
-                .returns(Object.class)
+                .addJavadoc("@此方法由apt自动生成\n")
+                .returns(TypeVariableName.get("T"))
+                .addTypeVariable(TypeVariableName.get("T"))
                 .addModifiers(PUBLIC, STATIC)
                 .addException(IllegalAccessException.class)
                 .addException(InstantiationException.class)
-                .addParameter(Class.class, "mClass");
+                .addException(NoSuchMethodException.class)
+                .addException(InvocationTargetException.class)
+                //指定类构造
+                .addParameter(
+                        ParameterSpec
+                                .builder(ParameterizedTypeName.get(ClassName.get(Class.class), TypeVariableName.get("T")), "mClass", FINAL)
+//                                .addAnnotation(NotNull.class)
+                                .build())
+                //构造方法需要的参数
+                .addParameter(
+                        ParameterSpec
+                                .builder(TypeVariableName.get("Object..."), "params")
+//                                .addAnnotation(Nullable.class)
+                                .build());
+
+        //构建代码块
+        // 开始{
+        CodeBlock.Builder mCodeBlockBuilder = CodeBlock.builder();
+        mCodeBlockBuilder.beginControlFlow(" switch (mClass.getName()) ");
+        for (ClassName cn : mAddedSet) {
+            mCodeBlockBuilder.add("case $S: \n", cn.reflectionName())
+                    .indent()
+                    .beginControlFlow("if (params == null || params.length == 0)")
+                    .addStatement("return  (T)new $T()", cn)
+                    .nextControlFlow("else")
+                    .addStatement("return  (T)new $T($L)", cn, "params")
+                    .endControlFlow()
+                    .unindent();
+
+        }
+        mCodeBlockBuilder.addStatement("default: return mClass.getConstructor().newInstance()");
+        //结束}
+        mCodeBlockBuilder.endControlFlow();
 
         mb1.addCode(mCodeBlockBuilder.build());
 
@@ -106,4 +125,6 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
                 .writeTo(mProcessingEnvironment.getFiler());
 
     }
+
+
 }

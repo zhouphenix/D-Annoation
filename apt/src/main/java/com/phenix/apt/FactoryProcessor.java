@@ -7,17 +7,20 @@ import com.phenix.apt.impl.ExampleProcessorImpl;
 import com.phenix.apt.impl.InstanceFactoryProcessorImpl;
 import com.phenix.apt.interfaces.IProcessor;
 import com.phenix.apt.util.Utils;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.TypeName;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.SimpleElementVisitor6;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 @AutoService(Processor.class)
@@ -64,13 +67,18 @@ public class FactoryProcessor extends AbstractProcessor {
             for (TypeElement element : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(entry.getKey()))) {
                 try {
                     if (Utils.isValidClass(element)) {
+
                         System.out.println("正在处理: " + element.toString());
                         mMessager.printMessage(Diagnostic.Kind.NOTE, "正在处理: " + element.toString());
                         processor.process(element);
+                    } else {
+                        System.out.println("忽略: " + element.toString());
                     }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println("异常信息：" + e.getMessage());
+                    System.err.println("异常信息：" + e.getMessage());
                     mMessager.printMessage(Diagnostic.Kind.ERROR, "异常信息：" + e.getMessage());
                 }
             }
@@ -93,7 +101,7 @@ public class FactoryProcessor extends AbstractProcessor {
     private Map<Class<? extends Annotation>, IProcessor<TypeElement>> getSupportedAnnotationClass() {
         Map<Class<? extends Annotation>, IProcessor<TypeElement>> map = new HashMap<>();
         map.put(InstanceAnn.class, new InstanceFactoryProcessorImpl());
-        map.put(ExampleAnn.class, new ExampleProcessorImpl());
+//        map.put(ExampleAnn.class, new ExampleProcessorImpl());
         return map;
     }
 
