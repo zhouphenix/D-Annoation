@@ -71,20 +71,18 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
      * @return MethodSpec
      */
     private static MethodSpec buildMethod(String s, Set<ClassName> classNames) {
-
         System.err.println("s: " + s + ", " + classNames);
         String[] params = s.split("-");
         List<ParameterSpec> parameterSpecs = new ArrayList<>();
         // 参数长度
         int length = params.length;
-        //TODO 需要考虑泛型参数
+        // 需要考虑泛型参数 ==> 泛型不适合这类注解，除非穷举所有的可支持类型
 
         List<String> pModel = new ArrayList<>();
         String p;
         System.err.println("length: " + length);
         for (int i = 0; i < length; i++) {
             try {
-                System.err.println("for: " + i);
                 if (Strings.isNullOrEmpty(params[i])) {
                     break;
                 }
@@ -141,7 +139,6 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
         mCodeBlockBuilder
                 .add("default: return mClass.getConstructor(" + String.join(",", ps) + ")", (Object[]) params)
                 .addStatement(".newInstance($L)", String.join(",", pModel)
-
                 );
         //结束}
         mCodeBlockBuilder.endControlFlow();
