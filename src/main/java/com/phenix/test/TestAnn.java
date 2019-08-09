@@ -3,7 +3,6 @@ package com.phenix.test;
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 //@InstanceAnn
