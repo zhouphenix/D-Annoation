@@ -15,7 +15,8 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.auto.service/auto-service
-    implementation group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc3'
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc4'
+    implementation group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc4'
     // https://mvnrepository.com/artifact/com.squareup/javapoet
     implementation group: 'com.squareup', name: 'javapoet', version: '1.9.0'
 
