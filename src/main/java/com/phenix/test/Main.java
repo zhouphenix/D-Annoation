@@ -1,6 +1,7 @@
 package com.phenix.test;
 
 
+import com.phenix.ExampleAnn;
 import com.phenix.InstanceFactory;
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
@@ -9,7 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-//@com.phenix.ann.apt.ExampleAnn
+@com.phenix.ann.apt.ExampleAnn
 @InstanceAnns({
         @InstanceAnn("java.lang.String"),
         @InstanceAnn({"java.lang.Object", "java.lang.String"})
@@ -27,13 +28,13 @@ public class Main {
         System.out.println("Hello world!");
 
         try {
-            TestAnn testAnn = InstanceFactory.create(TestAnn.class, "123");
+            TestAnn testAnn = InstanceFactory.create(TestAnn.class, (Object) "123");
             testAnn.sayHello("phenix");
 
-//            ExampleAnn exampleAnn = new ExampleAnn();
-//            System.out.println(exampleAnn);
-//            ExampleAnn.main(new String[]{"123"});
-//            ExampleAnn.method("SM", "X", "招军买马");
+            ExampleAnn exampleAnn = new ExampleAnn();
+            System.out.println(exampleAnn);
+            ExampleAnn.main(new String[]{"123"});
+            ExampleAnn.method("SM", "X", "招军买马");
             Constructor<?>[] cs = TestAnn.class.getDeclaredConstructors();
             Object oo = new Object();
             new TestAnn(Object.class.cast(oo));

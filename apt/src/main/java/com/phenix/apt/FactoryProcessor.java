@@ -1,7 +1,9 @@
 package com.phenix.apt;
 
 import com.google.auto.service.AutoService;
+import com.phenix.ann.apt.ExampleAnn;
 import com.phenix.ann.apt.InstanceAnns;
+import com.phenix.apt.impl.ExampleProcessorImpl;
 import com.phenix.apt.impl.InstanceFactoryProcessorImpl;
 import com.phenix.apt.interfaces.IProcessor;
 import com.phenix.apt.util.Utils;
@@ -95,7 +97,7 @@ public class FactoryProcessor extends AbstractProcessor {
     private Map<Class<? extends Annotation>, IProcessor<TypeElement>> getSupportedAnnotationClass() {
         Map<Class<? extends Annotation>, IProcessor<TypeElement>> map = new HashMap<>();
         map.put(InstanceAnns.class, new InstanceFactoryProcessorImpl());
-//        map.put(ExampleAnn.class, new ExampleProcessorImpl());
+        map.put(ExampleAnn.class, new ExampleProcessorImpl());
         return map;
     }
 
