@@ -8,7 +8,7 @@ AOP {APT,AspectJ,Javassist}
 [TOC]
 
 ### 一、实践篇--APT
-注解代码生成
+#### 1.Annotation Processor注解代码生成
 
 build.gradle中添加依赖：
 ```
@@ -100,6 +100,11 @@ public final class InstanceFactory {
 【注意】
 * 1.注解可继承，但子类InstanceAnns需要比父类范围大，否则不会区别差异，除非重新注解
 * 2.泛型 明显不适合改注解，除非添加所有支持的构造类型
+
+
+#### 2.[AspectJ——简介以及在IntelliJ IDEA下的配置](AspectJ——简介以及在IntelliJ IDEA下的配置)
+【注意】：AspectJ 需要放在主module下才能生效
+
 
 
 ### 二、例子篇

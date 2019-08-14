@@ -2,6 +2,7 @@ package com.phenix.test;
 
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
+import com.phenix.ann.aspect.MemoryCache;
 
 /**
  * @author ：zhouphenix
@@ -22,5 +23,10 @@ public class SubTestAnn<T> extends TestAnn {
 
     public SubTestAnn(Object o, String s) {
         super(o, s);
+    }
+
+    @MemoryCache
+    public void println(String s) {
+        System.out.println("++++++++++" + s);
     }
 }

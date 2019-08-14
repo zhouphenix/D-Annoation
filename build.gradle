@@ -1,3 +1,5 @@
+import java.util.function.Consumer
+
 plugins {
     id 'java'
     id 'application'
@@ -7,6 +9,7 @@ plugins {
 }
 
 mainClassName = 'com.phenix.test.Main'
+
 
 ext {
     mGroup = 'com-phenix-annapt'
@@ -19,24 +22,54 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+//def generatedPath = ge
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
+    implementation files('libs/aspectjrt.jar')
     implementation project(':ann')
-    implementation project(':aop')
     annotationProcessor project(':apt')
 
 
 }
 
+
 compileJava {
     options.compilerArgs << '-Adebug'
 }
 
+
+clean.doLast { task ->
+    // clean-up directory when necessary
+    boolean isDeleted = deleteOutDir(project)
+    println " the out directory path is ${project.projectDir} , deleted?${isDeleted}"
+    project.subprojects { p ->
+        isDeleted = deleteOutDir(p)
+        println " the out directory path is ${p.projectDir} , deleted?${isDeleted}"
+    }
+
+}
+
+/**
+ * 删除out输出文件
+ * @param project 主工程或module
+ * @return boolean 是否成功
+ */
+private boolean deleteOutDir(project) {
+    String outDir = project.projectDir.getPath() + File.separator + 'out'
+    boolean result = false
+    try {
+        File f = file(outDir)
+        result = f.deleteDir()
+    } catch (e) {
+        e.printStackTrace()
+    }
+    return result
+}
 
 
 /**allprojects是对所有project的配置，包括Root Project。而subprojects是对所有Child Project的配置。
@@ -77,4 +110,6 @@ subprojects {
     hello.doLast {
         println "here is subprojects"
     }
+
+
 }

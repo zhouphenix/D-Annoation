@@ -18,6 +18,6 @@ dependencies {
 }
 
 
-hello.doLast { task ->
-    println " —— I'm the ${task.project.name} project"
+hello.doLast { 
+    println " —— I'm the ${project.name} project"
 }

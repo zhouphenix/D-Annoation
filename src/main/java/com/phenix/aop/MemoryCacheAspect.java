@@ -13,7 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
  */
 @Aspect
 public class MemoryCacheAspect {
-    @Pointcut("execution(@com.app.annotation.aspect.MemoryCache * *(..))")//方法切入点
+    @Pointcut("execution(@com.phenix.ann.aspect.MemoryCache * *(..))")//方法切入点
     public void methodAnnotated() {
     }
 
