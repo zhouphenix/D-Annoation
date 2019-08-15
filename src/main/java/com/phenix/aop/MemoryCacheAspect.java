@@ -30,13 +30,15 @@ public class MemoryCacheAspect {
         }
         String key = keyBuilder.toString();
         Object result = mMemoryCacheManager.get(key);//key规则 ： 方法名＋参数1+参数2+...
-        System.out.println("key：" + key + "--->" + (result != null ? "not null" : "null"));
         //缓存已有，直接返回
-        if (result != null) return result;
+        if (result != null) {
+            System.out.println("(key：value) = " + key + "-->" + result);
+            return result;
+        }
         //执行原方法
         result = joinPoint.proceed();
         //对象不为空
-        if (result != null ){
+        if (result != null) {
             mMemoryCacheManager.add(key, result);//存入缓存
             System.out.println("key：" + key + "--->" + "save");
         }

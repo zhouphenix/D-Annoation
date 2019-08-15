@@ -6,17 +6,16 @@ import com.phenix.InstanceFactory;
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
 import com.phenix.ann.aspect.MemoryCache;
-import com.phenix.aop.TestAspectJ;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 @com.phenix.ann.apt.ExampleAnn
-//@InstanceAnns({
-//        @InstanceAnn("java.lang.String"),
-//        @InstanceAnn({"java.lang.Object", "java.lang.String"})
-//})
+@InstanceAnns({
+        @InstanceAnn("java.lang.String"),
+        @InstanceAnn({"java.lang.Object", "java.lang.String"})
+})
 public class Main {
 
     public Main(String s) {
@@ -24,6 +23,13 @@ public class Main {
     }
 
     public Main(Object o, String s) {
+    }
+
+
+
+    @MemoryCache
+    public void print(String s) {
+        System.out.println("################ " + s);
     }
 
     public static void main(String[] args){
@@ -72,10 +78,10 @@ public class Main {
 
 
         TestAspectJ hello = new TestAspectJ();
-//        hello.sayHello("12321");
-//        hello.sayHello("22321");
-//        hello.sayHello("32321");
-//        hello.sayHello("12321");
+        hello.sayHello("12321");
+        hello.sayHello("22321");
+        hello.sayHello("32321");
+        hello.sayHello("12321");
 
         Main main = new Main("??");
         main.print("滋醒它");
@@ -83,10 +89,6 @@ public class Main {
         main.print("滋醒它3");
     }
 
-    @MemoryCache
-    public void print(String s) {
-        System.out.println("################ " + s);
-    }
 
 
 }
