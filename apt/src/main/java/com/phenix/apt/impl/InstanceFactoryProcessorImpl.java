@@ -3,7 +3,7 @@ package com.phenix.apt.impl;
 import com.google.common.base.Strings;
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
-import com.phenix.ann.aspect.MemoryCache;
+import com.phenix.ann.aspect.MemoryCacheAspect;
 import com.phenix.apt.Constants;
 import com.phenix.apt.interfaces.IProcessor;
 import com.squareup.javapoet.*;
@@ -98,7 +98,7 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
 
         //构建方法1
         MethodSpec.Builder method = MethodSpec.methodBuilder("create")
-                .addAnnotation(MemoryCache.class)
+                .addAnnotation(MemoryCacheAspect.class)
                 .addJavadoc("@此方法由apt自动生成\n")
                 .returns(TypeVariableName.get("T"))
                 .addTypeVariable(TypeVariableName.get("T"))

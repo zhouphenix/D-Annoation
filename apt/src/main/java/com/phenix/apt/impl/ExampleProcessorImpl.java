@@ -1,6 +1,6 @@
 package com.phenix.apt.impl;
 
-import com.phenix.ann.aspect.MemoryCache;
+import com.phenix.ann.aspect.MemoryCacheAspect;
 import com.phenix.apt.Constants;
 import com.phenix.apt.interfaces.IProcessor;
 import com.squareup.javapoet.*;
@@ -86,7 +86,7 @@ public class ExampleProcessorImpl implements IProcessor<TypeElement> {
                         //    System.out.println(s + ss);
                         //  }
                         .addMethod(MethodSpec.methodBuilder("method")
-                                .addAnnotation(MemoryCache.class)
+                                .addAnnotation(MemoryCacheAspect.class)
                                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                                 .addJavadoc("static + void + (String) method \n")
                                 .addParameter(ParameterSpec.builder(String.class, "s", Modifier.FINAL).build())

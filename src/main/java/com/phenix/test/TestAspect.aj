@@ -14,9 +14,9 @@ public aspect TestAspect {
     pointcut withinMyClass(): within(com.phenix.test.TestAspectJ);
 
     before(): withinMyClass() {
-        System.out.println("\n> before():withinMyClass");
-        System.out.println(thisJoinPoint.getSignature());
-        System.out.println(thisJoinPoint.getSourceLocation());
+//        System.out.println("\n> before():withinMyClass");
+//        System.out.println(thisJoinPoint.getSignature());
+//        System.out.println(thisJoinPoint.getSourceLocation());
     }
 
     //捕获特定包中所有连接点
@@ -24,18 +24,18 @@ public aspect TestAspect {
 
     //该aspect也在package com.phenix.aop下，因此exclude掉
     before(): withinPackage() && !within(com.phenix.test.TestAspect){
-        System.out.println("\n> before():withinPackage");
-        System.out.println(thisJoinPoint.getSignature());
-        System.out.println(thisJoinPoint.getSourceLocation());
+//        System.out.println("\n> before():withinPackage");
+//        System.out.println(thisJoinPoint.getSignature());
+//        System.out.println(thisJoinPoint.getSourceLocation());
     }
 
     //捕获特定方法内所有连接点
     pointcut withinMethod(): withincode(* com.phenix.test.TestAspectJ.sayHello(..));
 
     before():withinMethod() {
-        System.out.println("\n> before():withinMethod");
-        System.out.println(thisJoinPoint.getSignature());
-        System.out.println(thisJoinPoint.getSourceLocation());
+//        System.out.println("\n> before():withinMethod");
+//        System.out.println(thisJoinPoint.getSignature());
+//        System.out.println(thisJoinPoint.getSourceLocation());
     }
 
     //=======================================================================

@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
-public @interface MemoryCache {
+public @interface MemoryCacheAspect {
 }

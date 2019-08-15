@@ -5,7 +5,8 @@ import com.phenix.ExampleAnn;
 import com.phenix.InstanceFactory;
 import com.phenix.ann.apt.InstanceAnn;
 import com.phenix.ann.apt.InstanceAnns;
-import com.phenix.ann.aspect.MemoryCache;
+import com.phenix.ann.aspect.ExecuteTimeAspect;
+import com.phenix.ann.aspect.MemoryCacheAspect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -18,21 +19,22 @@ import java.util.Arrays;
 })
 public class Main {
 
+    @ExecuteTimeAspect
     public Main(String s) {
-
+        System.out.println("@ExecuteTimeAspect Main " + s);
     }
 
     public Main(Object o, String s) {
     }
 
 
-
-    @MemoryCache
+    @MemoryCacheAspect
     public void print(String s) {
         System.out.println("################ " + s);
     }
 
-    public static void main(String[] args){
+    @ExecuteTimeAspect
+    public static void main(String[] args) {
         System.out.println("Hello world!");
 
         try {
@@ -61,9 +63,9 @@ public class Main {
             e.printStackTrace();
         }
 
-        /* 测试@MemoryCache (AspectJ)*/
+        /* 测试@MemoryCacheAspect (AspectJ)*/
         System.err.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.err.println("+++++++++++++++测试@MemoryCache (AspectJ)+++++++++++++");
+        System.err.println("+++++++++++++++测试@MemoryCacheAspect (AspectJ)+++++++++++++");
         System.err.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
         try {
             TestAnn MemoryCache1 = InstanceFactory.create(TestAnn.class, (Object) "345");
@@ -83,12 +85,11 @@ public class Main {
         hello.sayHello("32321");
         hello.sayHello("12321");
 
-        Main main = new Main("??");
+        Main main = new Main("滋它");
         main.print("滋醒它");
         main.print("滋醒它2");
         main.print("滋醒它3");
     }
-
 
 
 }

@@ -1,10 +1,10 @@
 package com.phenix.aop;
 
+import com.phenix.aop.util.AspectUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 
 
 /**
@@ -13,22 +13,15 @@ import org.aspectj.lang.reflect.MethodSignature;
  */
 @Aspect
 public class MemoryCacheAspect {
-    @Pointcut("execution(@com.phenix.ann.aspect.MemoryCache * *(..))")//方法切入点
+    @Pointcut("execution(@com.phenix.ann.aspect.MemoryCacheAspect * *(..))")//方法切入点
     public void methodAnnotated() {
     }
 
     @Around("methodAnnotated()")//在连接点进行方法替换
     public Object aroundJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        String methodName = methodSignature.getName();
+        String methodName = joinPoint.getSignature().getName();
         CacheManager mMemoryCacheManager = CacheManager.getInstance();
-        StringBuilder keyBuilder = new StringBuilder();
-        keyBuilder.append(methodName);
-        for (Object obj : joinPoint.getArgs()) {
-            if (obj instanceof String) keyBuilder.append((String) obj);
-            else if (obj instanceof Class) keyBuilder.append(((Class) obj).getSimpleName());
-        }
-        String key = keyBuilder.toString();
+        String key = AspectUtils.buildKey(methodName, joinPoint.getArgs());
         Object result = mMemoryCacheManager.get(key);//key规则 ： 方法名＋参数1+参数2+...
         //缓存已有，直接返回
         if (result != null) {

@@ -1,6 +1,6 @@
 package com.phenix.test;
 
-import com.phenix.ann.aspect.MemoryCache;
+import com.phenix.ann.aspect.MemoryCacheAspect;
 
 /**
  * @author ：zhouphenix
@@ -12,14 +12,10 @@ import com.phenix.ann.aspect.MemoryCache;
 public class TestAspectJ {
 
 
-    @MemoryCache
+    @MemoryCacheAspect
     public String sayHello(String s) {
         System.out.println("Hello, AspectJ!" + s);
         return "Hello " + s;
-    }
-
-    public void print(String s){
-        System.out.println("################ " +  s);
     }
 
 
