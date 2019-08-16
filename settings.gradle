@@ -1,4 +1,5 @@
 rootProject.name = 'ann-apt'
 include 'ann'
 include 'apt'
-
+include 'buildSrc'
+findProject(':buildSrc')?.name = 'plugin'

@@ -6,6 +6,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
+import java.util.logging.Logger;
+
 
 /**
  * 根据MemoryCache注解自动添加缓存代理代码，通过aop切片的方式在编译期间织入源代码中
@@ -13,6 +15,9 @@ import org.aspectj.lang.annotation.Pointcut;
  */
 @Aspect
 public class MemoryCacheAspect {
+
+    private Logger logger = Logger.getLogger(this.getClass().getName());
+
     @Pointcut("execution(@com.phenix.ann.aspect.MemoryCacheAspect * *(..))")//方法切入点
     public void methodAnnotated() {
     }
@@ -25,7 +30,7 @@ public class MemoryCacheAspect {
         Object result = mMemoryCacheManager.get(key);//key规则 ： 方法名＋参数1+参数2+...
         //缓存已有，直接返回
         if (result != null) {
-            System.out.println("(key：value) = " + key + "-->" + result);
+            logger.info("(key：value) = " + key + "-->" + result);
             return result;
         }
         //执行原方法
@@ -33,7 +38,7 @@ public class MemoryCacheAspect {
         //对象不为空
         if (result != null) {
             mMemoryCacheManager.add(key, result);//存入缓存
-            System.out.println("key：" + key + "--->" + "save");
+            logger.info("key：" + key + "--->" + "save");
         }
 
         return result;

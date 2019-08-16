@@ -22,11 +22,30 @@ public class ExecuteTimeAspect {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
-    @Pointcut("execution(@com.phenix.ann.aspect.ExecuteTimeAspect * *(..))")//方法切入点
+    // @ExecuteTimeAspect 修饰的类、接口的Join Point
+    @Pointcut("within(@com.phenix.ann.aspect.ExecuteTimeAspect *)")
+    public void withinAnnotatedClass() {
+    }
+
+    //synthetic 是内部类编译后添加的修饰语， 所以!synthetic 表示非内部类
+    //@ExecuteTimeAspect 修饰的类、接口中的方法（不包括内部类中的方法）
+    @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
+    public void methdoInsideAnnotatedType() {
+    }
+
+    //@ExecuteTimeAspect 修饰的类的构造方法（不包括内部类中的构造方法）
+    @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
+    public void constructorInsideAnnotatedType() {
+    }
+
+    //@ExecuteTimeAspect 修饰的方法 或者 @ExecuteTimeAspect 修饰的类、接口中的方法（不包括内部类中的方法）
+    @Pointcut("execution(@com.phenix.ann.aspect.ExecuteTimeAspect * *(..)) || methdoInsideAnnotatedType()")//方法切入点
     public void methodAnnotated() {
     }
 
-    @Pointcut("execution(@com.phenix.ann.aspect.ExecuteTimeAspect *.new(..))")//构造器切入点
+    //@ExecuteTimeAspect 修饰的构造方法 或者@ExecuteTimeAspect 修饰的类的构造方法（不包括内部类中的构造方法）
+    @Pointcut("execution(@com.phenix.ann.aspect.ExecuteTimeAspect *.new(..)) || constructorInsideAnnotatedType()")
+//构造器切入点
     public void constructorAnnotated() {
     }
 
@@ -36,21 +55,21 @@ public class ExecuteTimeAspect {
         String methodName = signature.getName();
         long startTime = System.nanoTime();
         Object result = joinPoint.proceed();//执行原方法
-        StringBuilder logSb = new StringBuilder();
         // 打印时间差
-        logSb
+
+        logger.info("\n" + "☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯☯" + "\n" +
                 //com.phenix.test.Main
-                .append(signature.getDeclaringTypeName())
-                .append(".")
-                .append(methodName)
-                .append("(")
-                .append(Arrays.toString(joinPoint.getArgs()))
-                .append(")")
-                .append("\nat:")
-                .append(joinPoint.getSourceLocation())
-                .append("\n执行时间△t[")
-                .append(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime)).append("ms]");
-        logger.info(logSb.toString());
+                signature.getDeclaringTypeName() +
+                "." +
+                methodName +
+                "(" +
+                Arrays.toString(joinPoint.getArgs()) +
+                ")" +
+                "\nat:" +
+                joinPoint.getSourceLocation() +
+                "\n执行时间 ∆t[" +
+                TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime) + "ms]" +
+                "\n✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄✄");
 
         return result;
     }

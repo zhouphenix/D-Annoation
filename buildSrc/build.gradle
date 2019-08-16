@@ -1,0 +1,25 @@
+plugins{
+    id 'groovy'
+    //上传插件
+    id 'maven'
+}
+
+group rootProject.group
+version '1.0-SNAPSHOT'
+
+dependencies {
+    // https://mvnrepository.com/artifact/javassist/javassist
+//    compile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
+
+    compile gradleApi()
+    compile localGroovy()
+}
+
+//上传task
+uploadArchives{
+    repositories {
+        mavenDeployer{
+            repository(url: uri('./../repo'))
+        }
+    }
+}

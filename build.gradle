@@ -1,12 +1,13 @@
-import java.util.function.Consumer
-
 plugins {
     id 'java'
     id 'application'
     id 'idea'
+    // 自定义插件
+    id 'phenix'
     // 该插件会将生成的Java文件放置在build/generated/sources/annotationProcesssor/java/main下并会被idea所识别
     id 'net.ltgt.apt-idea' version "0.21"
 }
+
 
 mainClassName = 'com.phenix.test.Main'
 
@@ -21,8 +22,6 @@ group 'com-phenix-annapt'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
-
-//def generatedPath = ge
 
 repositories {
     mavenCentral()

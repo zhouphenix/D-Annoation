@@ -15,6 +15,7 @@ import com.phenix.ann.aspect.MemoryCacheAspect;
         @InstanceAnn("java.lang.Object"),
         @InstanceAnn({"java.lang.Object", "java.lang.String"})
 })
+
 public class SubTestAnn<T> extends TestAnn {
 
     public SubTestAnn(T o) {
