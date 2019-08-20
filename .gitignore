@@ -6,6 +6,8 @@
 /out/
 */out/
 
+repo/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

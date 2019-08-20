@@ -23,19 +23,19 @@ public class Utils {
         return element.getModifiers().contains(ABSTRACT);
     }
 
-    public static boolean isValidClass(TypeElement element) throws IllegalAccessException {
+    public static boolean isValidClass(TypeElement element) throws RuntimeException {
         if (element.getKind() != ElementKind.CLASS) {
             return false;
         }
 
         if (!isPublic(element)) {
             String message = String.format("Classes annotated with %s must be public.", ANNOTATION);
-            throw new IllegalAccessException(message);
+            throw new RuntimeException(message);
         }
 
         if (isAbstract(element)) {
             String message = String.format("Classes annotated with %s must not be abstract.", ANNOTATION);
-            throw new IllegalAccessException(message);
+            throw new RuntimeException(message);
         }
 
         return true;

@@ -128,7 +128,6 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
                     .unindent();
 
         }
-
         String[] ps = new String[pModel.size()];
         for (int i = 0; i < pModel.size(); i++) {
             ps[i] = "$L.class";
@@ -207,9 +206,7 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
         //构建类
         TypeSpec.Builder tb = classBuilder(CLASS_NAME).addModifiers(PUBLIC, FINAL).addJavadoc("@ 实例化工厂 此类由apt自动生成\n");
 
-        mConstructorTypeMap.forEach((s, classNames) -> {
-            tb.addMethod(buildMethod(s, classNames));
-        });
+        mConstructorTypeMap.forEach((s, classNames) -> tb.addMethod(buildMethod(s, classNames)));
 
         // 生成源代码
         JavaFile.builder(Constants.PACKAGE_NAME, tb.build())

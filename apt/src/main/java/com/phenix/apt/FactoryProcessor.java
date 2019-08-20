@@ -62,21 +62,28 @@ public class FactoryProcessor extends AbstractProcessor {
 
             // 过滤Type类型elements
             for (TypeElement element : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(entry.getKey()))) {
+
+                boolean isValid = false;
                 try {
-                    if (Utils.isValidClass(element)) {
-                        System.out.println("正在处理: " + element.toString());
-                        mMessager.printMessage(Diagnostic.Kind.NOTE, "正在处理: " + element.toString());
-                        processor.process(element);
-                    } else {
-                        System.out.println("忽略: " + element.toString());
-                    }
-
-
-                } catch (Exception e) {
+                    isValid = Utils.isValidClass(element);
+                } catch (RuntimeException e) {
                     e.printStackTrace();
-                    System.err.println("异常信息：" + e.getMessage());
-                    mMessager.printMessage(Diagnostic.Kind.ERROR, "异常信息：" + e.getMessage());
+                    System.out.println("忽略掉非法修饰: " + e.getMessage());
                 }
+                if (isValid) {
+                    System.out.println("正在处理: " + element.toString());
+                    mMessager.printMessage(Diagnostic.Kind.NOTE, "正在处理: " + element.toString());
+                    try {
+                        processor.process(element);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println("异常信息：" + e.getMessage());
+                        mMessager.printMessage(Diagnostic.Kind.ERROR, "异常信息：" + e.getMessage());
+                    }
+                } else {
+                    System.out.println("忽略: " + element.toString());
+                }
+
             }
             try {
                 processor.end();

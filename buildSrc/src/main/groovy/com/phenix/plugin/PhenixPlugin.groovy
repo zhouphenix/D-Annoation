@@ -2,6 +2,7 @@ package com.phenix.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 /**
  * @author ：zhouphenix
@@ -19,5 +20,12 @@ class PhenixPlugin implements Plugin<Project> {
         println "=========================="
 
         project.logger.debug("===============PhenixPlugin================")
+
+
+        Task phenixTask = project.tasks.create("phenix", TestTask)
+        phenixTask.message = '你好'
+        phenixTask.recipient = '中国'
+        phenixTask.group = 'plugin-phenix'
+        phenixTask.description = '自定义插件task'
     }
 }

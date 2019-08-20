@@ -1,3 +1,5 @@
+import com.phenix.plugin.TestTask
+
 plugins {
     id 'java'
     id 'application'
@@ -8,13 +10,16 @@ plugins {
     id 'net.ltgt.apt-idea' version "0.21"
 }
 
-
+//配置Gradle栏run， project 入口
 mainClassName = 'com.phenix.test.Main'
 
 
 ext {
     mGroup = 'com-phenix-annapt'
     mVersion = '1.0-SNAPSHOT'
+
+    //指定Task任务组
+    mPluginGroup = "plugin-phenix"
 //    其他module引用 rootProject.mGroup 、rootProject.mVersion
 }
 
@@ -97,18 +102,35 @@ allprojects {
     }
 
     tasks.create('hello') {
+        group = rootProject.ext.mPluginGroup
+        description = 'Produces a greeting'
+
         doLast {
             task ->
                 println "project name is ${task.project.name}"
         }
     }
+
+
 }
 
 
 subprojects {
+
     hello.doLast {
         println "here is subprojects"
     }
 
 
 }
+
+tasks.register("testGreeting", TestTask) {
+    // 指定Gradle栏任务组
+    group = mPluginGroup
+    description = 'Produces a world greeting'
+    //传入参数
+    message = 'Hello'
+    recipient = 'World'
+}
+
+

@@ -35,7 +35,16 @@ public class Main {
 
     @ExecuteTimeAspect
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        System.out.println("测试开始\n\n" +
+                "                  ,;,,;\n" +
+                "                 ,;;'(    马\n" +
+                "       __      ,;;' ' \\   ┇\n" +
+                "    /'  '\\'~~'~' \\ /'\\.)  到 \n" +
+                " ,;(      )    /  |.      ┇\n" +
+                ",;' \\    /-.,,(   ) \\     成\n" +
+                "     ) /       ) / )|     ┇ \n" +
+                "     ||        ||  \\)     功\n" +
+                "     (_\\       (_\\");
 
         try {
             /* 测试@Instance*/
@@ -53,7 +62,7 @@ public class Main {
             Object oo = new Object();
             new TestAnn(Object.class.cast(oo));
             for (int i = 0; i < cs.length; i++) {
-                System.out.println(i + ",, " + Arrays.toString(cs[i].getParameterTypes()));
+                System.out.println(i + ", " + Arrays.toString(cs[i].getParameterTypes()));
             }
 
             SubTestAnn<String> subTestAnn = new SubTestAnn<>("enen");
