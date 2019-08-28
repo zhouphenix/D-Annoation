@@ -11,7 +11,7 @@ AOP {APT,AspectJ,Javassist}
 [TOC]
 
 ## 一、实践篇
-###1.   APT(AnnotationProcessor) 注解代码生成
+### 1.   APT(AnnotationProcessor) 注解代码生成
 
 build.gradle中添加依赖（依赖module或jar）：
 ```groovy
