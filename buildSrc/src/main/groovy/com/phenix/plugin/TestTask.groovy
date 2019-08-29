@@ -18,7 +18,10 @@ class TestTask extends DefaultTask {
 
     @TaskAction
     void testGreeting() {
-        println "${message}, ${recipient}! ---${project.extPhenix.name} : ${project['extPhenix'].desc}"
+        println """
+            testGreeting  我不休息我还能学    ⊂(‘ω’⊂ )))Σ≡=─༄༅༄༅༄༅༄༅༄༅
+        """
+        println "${message}, ${recipient}! \n ---${project.extPhenix.name} : ${project['extPhenix'].desc}"
     }
 
 
