@@ -133,4 +133,10 @@ tasks.register("testGreeting", TestTask) {
     recipient = 'World'
 }
 
+//自定义extensions
+extPhenix {
+    name = 'extPhenix 覆盖参数name'
+    desc = 'extPhenix 覆盖参数desc'
+}
+
 

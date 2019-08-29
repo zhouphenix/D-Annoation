@@ -19,7 +19,6 @@ dependencies {
     implementation group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc4'
     // https://mvnrepository.com/artifact/com.squareup/javapoet
     implementation group: 'com.squareup', name: 'javapoet', version: '1.9.0'
-
     implementation project(':ann')
     
 }

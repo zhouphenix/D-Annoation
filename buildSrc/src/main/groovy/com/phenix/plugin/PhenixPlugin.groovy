@@ -21,11 +21,15 @@ class PhenixPlugin implements Plugin<Project> {
 
         project.logger.debug("===============PhenixPlugin================")
 
+        project.extensions.create('extPhenix', ExtPhenix)
+
 
         Task phenixTask = project.tasks.create("phenix", TestTask)
         phenixTask.message = '你好'
         phenixTask.recipient = '中国'
         phenixTask.group = 'plugin-phenix'
         phenixTask.description = '自定义插件task'
+
+
     }
 }
