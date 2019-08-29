@@ -17,10 +17,9 @@ public class AspectUtils {
      */
     public static String buildKey(String methodName, Object... args) {
         StringBuilder keyBuilder = new StringBuilder();
-        keyBuilder.append(methodName).append(":");
+        keyBuilder.append(methodName);
         for (Object obj : args) {
-            if (obj instanceof String) keyBuilder.append((String) obj);
-            else if (obj instanceof Class) keyBuilder.append(((Class) obj).getSimpleName());
+            keyBuilder.append(":").append(obj);
         }
         return keyBuilder.toString();
     }
