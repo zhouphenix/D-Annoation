@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class LRUCache<K, V> {
 
-    int initSize;
-    LinkedHashMap<K, V> cache;
+    private int initSize;
+    private LinkedHashMap<K, V> cache;
 
     public LRUCache(int size) {
         this.initSize = size;
@@ -36,12 +36,16 @@ public class LRUCache<K, V> {
         return cache.size();
     }
 
-    public void getAll() {
+    public V remove(Object key){
+        return cache.remove(key);
+    }
+
+
+    private void getAll() {
         for (Map.Entry<K, V> e : cache.entrySet()) {
             System.out.println(e.getKey() + ";" + e.getValue());
         }
     }
-
 
     /**
      * @param args

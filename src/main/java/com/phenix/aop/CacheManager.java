@@ -28,4 +28,8 @@ public class CacheManager {
     public Object get(String key) {
         return mMemoryCache.get(key);
     }
+
+    public Object remove(String key){
+        return mMemoryCache.remove(key);
+    }
 }

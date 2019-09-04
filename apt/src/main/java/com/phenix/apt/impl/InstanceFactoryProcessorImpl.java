@@ -98,7 +98,6 @@ public class InstanceFactoryProcessorImpl implements IProcessor<TypeElement> {
 
         //构建方法1
         MethodSpec.Builder method = MethodSpec.methodBuilder("create")
-                .addAnnotation(MemoryCacheAspect.class)
                 .addJavadoc("@此方法由apt自动生成\n")
                 .returns(TypeVariableName.get("T"))
                 .addTypeVariable(TypeVariableName.get("T"))
